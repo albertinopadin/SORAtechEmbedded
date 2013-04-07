@@ -1,0 +1,20 @@
+version = "1.0.0"
+description = "Height Sensor"
+
+schema HeightSensorBT_v1 {
+
+  // insert resource definitions here 
+
+    // The measured distance (by the ultrasonic sensor)
+    uint8 distance {
+        readonly
+    }
+    
+    enum LED2 {
+        LED2_ON, LED2_OFF
+    }
+    
+    LED2 led2 {
+        writeonly
+    }
+}
