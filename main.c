@@ -4,11 +4,6 @@
  * main.c
  */
 
-//#define LED_ON()                (P1OUT |= BIT6)
-//#define LED_OFF()               (P1OUT &= ~BIT6)
-//#define LED_READ()              (P1OUT & BIT6)
-//#define LED_TOGGLE()            (P1OUT ^= BIT6)
-
 #define CONNECTED_LED_ON()      (P1OUT |= BIT0)
 #define CONNECTED_LED_OFF()     (P1OUT &= ~BIT0)
 
@@ -39,7 +34,6 @@ void init(void) {
     BCSCTL3 = XT2S_0 + LFXT1S_2 + XCAP_1;
 
     P1DIR |= BIT0;  /* LED */
-    //LED_OFF();
     P1DIR |= BIT6;  /* CONNECTED_LED */
     CONNECTED_LED_OFF();
 
@@ -61,11 +55,6 @@ void init(void) {
     IFG2 &= ~(UCA0RXIFG);
     IE2 |= UCA0RXIE;
 
-//    TA1CCTL0 = CM_0 + CCIS_0 + OUTMOD_0 + CCIE;
-//    TA1CCR0 = 1200;
-//    TA1CTL = TASSEL_1 + ID_0 + MC_1;
-
-
     ////////////////////////////////////////////////////
     ////// INIT ADC FOR SENSOR //////////////////
 
@@ -73,25 +62,6 @@ void init(void) {
 
     ADC10CTL0 &= ~ENC;
 
-        /*
-         * Control Register 0
-         *
-         * ~ADC10SC -- No conversion
-         * ~ENC -- Disable ADC
-         * ~ADC10IFG -- Clear ADC interrupt flag
-         * ~ADC10IE -- Disable ADC interrupt
-         * ADC10ON -- Switch On ADC10
-         * ~REFON -- Disable ADC reference generator
-         * ~REF2_5V -- Set reference voltage generator = 1.5V
-         * ~MSC -- Disable multiple sample and conversion
-         * ~REFBURST -- Reference buffer on continuously
-         * ~REFOUT -- Reference output off
-         * ~ADC10SR -- Reference buffer supports up to ~200 ksps
-         * ADC10SHT_0 -- 4 x ADC10CLKs
-         * SREF_0 -- VR+ = VCC and VR- = VSS
-         *
-         * Note: ~<BIT> indicates that <BIT> has value zero
-         */
         ADC10CTL0 = ADC10ON + ADC10SHT_0 + SREF_0;
         ADC10CTL1 = INCH_7;		//Select adc channel 7 (P1.7)
         /* Analog (Input) Enable Control Register 0 */
@@ -155,8 +125,6 @@ void Em_Message_unlock(uint8_t key) {
 
 #define COUNT_DEFAULT 5
 
-//volatile HeightSensorBT_v1_cmd_t cmdRes = HeightSensorBT_v1_STOP_CMD;
-
 
 int main(int argc, char *argv[]) {
     volatile int dummy = 0;
@@ -175,19 +143,6 @@ void HeightSensorBT_v1_connectHandler(void) {
 void HeightSensorBT_v1_disconnectHandler(void) {
     CONNECTED_LED_OFF();
 }
-
-//void HeightSensorBT_v1_cmd_store(HeightSensorBT_v1_cmd_t* input) {
-//    cmdRes = *input;
-//    switch (cmdRes) {
-//        case HeightSensorBT_v1_START_CMD:
-//            //curCount = countRes * 2;
-//            //curTime = 0;
-//            break;
-//        case HeightSensorBT_v1_STOP_CMD:
-//            //LED_OFF();
-//            break;
-//    }
-//}
 
 int getDistance(void) {
 	
